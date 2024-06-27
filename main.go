@@ -5,14 +5,14 @@ import (
 	"time"
 )
 
-const NUMBER_OF_ROWS int = 51
-const NUMBER_OF_COLUMNS int = 51
+const NUMBER_OF_ROWS int = 25
+const NUMBER_OF_COLUMNS int = 50
 
 func main() {
 	var grid [NUMBER_OF_ROWS][NUMBER_OF_COLUMNS]int
 	populateSeed(&grid)
 
-	ticker := time.NewTicker(1 * time.Second)
+	ticker := time.NewTicker(500 * time.Millisecond)
 	done := make(chan bool)
 
 	go func() {
@@ -27,7 +27,7 @@ func main() {
 		}
 	}()
 
-	time.Sleep(60 * time.Second)
+	time.Sleep(3600 * time.Second)
 	ticker.Stop()
 	done <- true
 }
@@ -39,10 +39,10 @@ func populateSeed(grid *[NUMBER_OF_ROWS][NUMBER_OF_COLUMNS]int) *[NUMBER_OF_ROWS
 	// grid[centerX-1][centerY-1] = 1
 	grid[centerX-1][centerY] = 1
 	// grid[centerX-1][centerY+1] = 1
-	// grid[centerX][centerY-1] = 1
-	// grid[centerX][centerY] = 1
-	grid[centerX][centerY+1] = 1
-	grid[centerX+1][centerY-1] = 1
+	grid[centerX][centerY-1] = 1
+	grid[centerX][centerY] = 1
+	// grid[centerX][centerY+1] = 1
+	// grid[centerX+1][centerY-1] = 1
 	grid[centerX+1][centerY] = 1
 	grid[centerX+1][centerY+1] = 1
 
@@ -116,9 +116,15 @@ func nextGeneration(grid *[NUMBER_OF_ROWS][NUMBER_OF_COLUMNS]int) *[NUMBER_OF_RO
 func printGrid(grid [NUMBER_OF_ROWS][NUMBER_OF_COLUMNS]int) {
 	for i := 0; i < len(grid); i++ {
 		for j := 0; j < len(grid[i]); j++ {
-			fmt.Printf("%d ", grid[i][j])
-		}
+			var print_square string
+			if grid[i][j] < 1 {
+				print_square = " "
+			} else {
+				print_square = "*"
+			}
 
+			fmt.Printf("%s ", print_square)
+		}
 		fmt.Println()
 	}
 }
